@@ -1,0 +1,11 @@
+<%
+    defaultAvatarHelper = ( value,valueRefer ) =>{
+        if(value == null || value == ''){
+            if(valueRefer == '1'){
+                return  value = 'images/avatar/defaultMale.png';
+            }else{
+                return  value = 'images/avatar/defaultFemale.png';
+            }
+        }
+    }
+%>

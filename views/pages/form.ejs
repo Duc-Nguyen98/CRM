@@ -1,0 +1,167 @@
+<div class="content-body" style="min-height: 1113px;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Form Validation</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-validation">
+                            <form class="form-validate" action="" method="POST" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Username
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val-username"
+                                                    name="customerName" value="<%= items.customerName %>"
+                                                    placeholder="Enter a username..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerEmail">Email <span
+                                                    class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="customerEmail" name="customerEmail"
+                                                    value="<%= items.customerEmail %>" placeholder="Your valid email..">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerJob">Job Name
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="customerJob"
+                                                    name="customerJob" value="<%= items.customerJob %>" maxlength="150"
+                                                    placeholder="Enter a job name..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerDate">Birth date
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="date" class="form-control" id="customerDate"
+                                                    name="customerDate"
+                                                    value="<%=  moment(items.customerDate ).format('YYYY-MM-DD'); %>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerAddress">Address
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="customerAddress"
+                                                    name="customerAddress" maxlength="255"
+                                                    value="<%= items.customerAddress %>"
+                                                    placeholder="Enter a Address...">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerGender">Gender
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control default-select" id="customerGender"
+                                                    name="customerGender">
+                                                    <option value="" selected="selected" hidden="hidden">Please select
+                                                        Gender</option>
+                                                    <option value="1" <%- (items.customerGender==1 ) ?
+                                                        selected="selected" : '' %>>Male</option>
+                                                    <option value="2" <%- (items.customerGender==2 ) ?
+                                                        selected="selected" : '' %>>Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="customerTelephone">Telephone
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">+84</div>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="customerTelephone"
+                                                        name="customerTelephone" value="<%=items.customerTelephone %>"
+                                                        maxlength="10" placeholder="333-333-333">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label4 class="col-lg-4 col-form-label" for="customerGroupId">Group Name
+                                                <span class="text-danger">*</span>
+                                            </label4>
+                                            <div class="col-lg-6">
+                                                <select class="form-control default-select" id="customerGroupId"
+                                                    name="customerGroupId">
+                                                    <option value="" selected="selected" hidden="hidden">Please select
+                                                        Gender</option>
+                                                    <option value="1" <%- (items.customerGroupId==1 ) ?
+                                                        selected="selected" : '' %>>Customer Normal</option>
+                                                    <option value="2" <%- (items.customerGroupId==2 ) ?
+                                                        selected="selected" : '' %>>Customers Potential</option>
+                                                    <option value="3" <%- (items.customerGroupId==3 ) ?
+                                                        selected="selected" : '' %>>Customers Vip</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label" for="customerAvatar">Upload Avatar
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="customerAvatar"
+                                                        value="" name="customerAvatar">
+                                                       
+                                                    <% if(items.customerAvatar==null || items.customerAvatar=='' ){ %>
+                                                        <label class="custom-file-label" for="customerAvatar">
+                                                            <%= items.customerAvatar %>Choose
+                                                                file
+                                                        </label>
+                                                        <% }else{ %>
+                                                            <label class="custom-file-label" for="customerAvatar">
+                                                                <%= items.customerAvatar %>
+                                                            </label>
+                                                            <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 ">
+                                        <div class="form-group row">
+                                            <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+                                                <button onclick="location.href='/'" type="button" class="btn btn-primary px-5"><i
+                                                        class="fa fa-1x fa-backward pr-2"></i> Back</button>
+                                                <button type="submit" class="btn btn-primary px-5"><i
+                                                        class="fa fa-1x fa-download pr-2"></i> Export</button>
+                                                <button type="submit" class="btn btn-primary px-5"><i
+                                                        class="fa fa-1x fa-download pr-2"></i> Clear</button>
+
+                                                <button type="submit" class="btn btn-primary px-5" ><i
+                                                    class="fa fa-1x fa-download pr-2"></i>Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

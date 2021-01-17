@@ -1,0 +1,185 @@
+<% include ./../helpers/imgAvatar %>
+<% include ./../helpers/convertOptionValue %>
+
+
+    <div class="content-body">
+        <div class="container-fluid">
+
+            <!-- Add Order -->
+            <div class="modal fade" id="addOrderModalside">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Project</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label class="text-black font-w500">Project Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-black font-w500">Deadline</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-black font-w500">Client Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary">CREATE</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Bootstrap</a>
+                    </li>
+
+                </ol>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header bgpurple">
+                            <h4 class="card-title text-white">Recent Payments Queue</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="zcontrols">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <select id="inputState" class="form-control default-select">
+                                            <option selected>Choose...</option>
+                                            <option>Option 1</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <button type="submit" class="btn btn-info">Apply</button>
+                                    </div>
+                                    <div class="form-group col-md-5 text-right">
+                                        <a href="form/<%= items.id %>" class="btn btn-info"><i
+                                                class="fa fa-plus-circle"></i></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-responsive-md">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="width80"><strong>#</strong></th>
+                                            <th><strong>Name</strong></th>
+                                            <th><strong>Avatar</strong></th>
+                                            <th><strong>Genders</strong></th>
+                                            <th><strong>BirthDay</strong></th>
+                                            <th><strong>EMail</strong></th>
+                                            <!-- <th><strong>STATUS</strong></th> -->
+                                            <th><strong>CreatedAt</strong></th>
+                                            <th><strong>UpdatedAt</strong></th>
+                                            <th><strong>Action</strong></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% items.forEach((item,index)=>{ %>
+                                            <tr>
+                                                <td><strong>
+                                                        <%= index + 1 %>
+                                                    </strong></td>
+                                                <td>
+                                                    <%= item.customerName%>
+                                                </td>
+                                                <td>
+
+                                                    <% if(item.customerAvatar == undefined || item.customerAvatar == ''){ %>
+                                                        <!--! call helper default avatar -->
+                                                        <img src="<%- defaultAvatarHelper(item.customerAvatar,item.customerGender) %>"
+                                                        style="border-radius: 50%;
+                                                        " width="50px" height="50px" alt="Avatar">
+                                                    <%}else{ %>
+                                                        <img src="<%= item.customerAvatar %>"
+                                                        style="border-radius: 50%;
+                                                        " width="50px" height="50px" alt="Avatar">
+                                                    <%} %>
+
+                                                
+                                                    
+                                                </td>
+                                                <td>
+                                                    <!--! call helper convert Option to String-->
+                                                  <span><%= convertOptionValueHelper(item.customerGender,['Male','Female']) %></span>
+                                                </td>
+                                                <td>
+                                                    <!-- 'HH:mm DD-MM-YYYY'-->
+                                                    <%= moment(item.customerDate ).format('DD-MM-YYYY');%>
+                                                </td>
+                                                <td>
+                                                    <%= item.customerEmail %>
+                                                </td>
+                                                <td>
+                                                    <span><i class="fa fa-user"></i> <%= item.created.nameCreateAt %></span> <br>
+                                                    <!-- 'HH:mm DD-MM-YYYY'-->
+                                                   <span><i class="fa fa-history"></i> <%= moment(item.created.time ).format('HH:mm | DD-MM-YYYY');%></span> 
+                                                </td>
+                                                <td>
+
+                                                    <% if(item.modified.nameUpdateAt==undefined || item.modified.nameUpdateAt=='' ){  %>
+                                                        <span><i class="fa fa-user"></i> <%= item.created.nameCreateAt %></span> <br>
+                                                    <%}else{ %>
+                                                        <span><i class="fa fa-user"></i> <%= item.modified.nameUpdateAt %></span> <br>
+                                                    <%} %>
+                                                    <!-- 'HH:mm DD-MM-YYYY'-->
+                                                   <span><i class="fa fa-history"></i> <%= moment(item.modified.time ).format('HH:mm | DD-MM-YYYY');%></span>
+                                                       
+                                                </td>
+                                                <!-- <td><span
+                                                    class="badge light badge-success">Successful</span>
+                                            </td> -->
+                                                <!-- <td>$21.56</td> -->
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn btn-success light sharp"
+                                                            data-toggle="dropdown">
+                                                            <svg width="20px" height="20px" viewBox="0 0 24 24"
+                                                                version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none"
+                                                                    fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <circle fill="#000000" cx="5" cy="12" r="2" />
+                                                                    <circle fill="#000000" cx="12" cy="12" r="2" />
+                                                                    <circle fill="#000000" cx="19" cy="12" r="2" />
+                                                                </g>
+                                                            </svg>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item"
+                                                                href="details/<%= item.id %>">Detail</a>
+                                                            <a class="dropdown-item" href="form/<%= item.id %>">Edit</a>
+                                                            <a class="dropdown-item "
+                                                                href="delete/<%= item.id %>">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
