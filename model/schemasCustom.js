@@ -17,7 +17,8 @@ const schema = new mongoose.Schema({
     modified:{
         nameUpdateAt : String,
         time : Date
-    }
+    },
+    softDelete:String,
     
 });
 

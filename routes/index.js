@@ -6,18 +6,23 @@ const itemsModel = require('./../model/schemasCustom')
 
 
 /* GET home page. */
-router.get('/', async function (req, res, next) {
-  await itemsModel
-    .find({})
+router.get('/', function (req, res, next) {
+  const taskOne = itemsModel
+    .find({ softDelete: '0' })
     .limit(10)
     .sort({ customerName: 1 })
-    // res.json(data)
-    .then(data => {
-      res.render('./pages/customer', {
-        items: data,
-      })
+  // res.json(data)
+  // 
+  const taskTwo = itemsModel
+    .countDocuments({ softDelete: '1' })
+
+  Promise.all([taskOne, taskTwo]).then(([dataOne, dataTwo]) => {
+    res.render('./pages/customer', {
+      items: dataOne,
+      restore: dataTwo
     })
-  // res.render('./pages/wizard_Service')
+  })
+
 });
 
 /* 
@@ -67,7 +72,7 @@ router.post('/form/(:id)?', async function (req, res, next) {
       time: Date.now()
     }
     item.customerAvatar = 'images/avatar/' + imgAvatar.name;
-    await itemsModel.create(item,(err, data) => {
+    await itemsModel.create(item, (err, data) => {
       // res.json(item);
       res.redirect('/');
     });
@@ -95,8 +100,10 @@ router.post('/form/(:id)?', async function (req, res, next) {
 })
 
 
+
+
 /* GET details an record. */
-router.get('/details/:id', async function (req, res, next) {
+router.get('(/trash)?/details/:id', async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel
     .findById({ _id: _id })
@@ -109,15 +116,55 @@ router.get('/details/:id', async function (req, res, next) {
 });
 
 
-/* DELETE delete an customer. */
+/* DELETE delete to trash restore an customer. */
 router.get('/delete/:id', async function (req, res, next) {
   const _id = req.params.id;
-  await itemsModel
-    .deleteOne({ _id: _id })
-    .then(data => {
-      res.status(201).redirect('/');
-      // res.json(data)
-    })
+  await itemsModel.updateOne({ _id: _id }, {
+    softDelete: "1",
+  }, (err, data) => {
+    res.redirect('back');
+    // res.json(data)
+  });
 });
+
+
+/* view record to trash restore an customer. */
+router.get('/trash/viewRestore', async function (req, res, next) {
+  await itemsModel
+  .find({ softDelete: '1' })
+  .sort({ customerName: 1 })
+  .then(data =>{
+    res.render('./pages/restoreCustomer', {
+      items: data,
+    })
+  })
+});
+
+/* RESTORE record to table an customer. */
+router.get('/trash/restore/:id', async function (req, res, next) {
+  const _id = req.params.id;
+  console.log(_id);
+  await itemsModel.updateOne({ _id: _id }, {
+    softDelete: "0",
+  }, (err, data) => {
+    res.redirect('/');
+    // res.json(data)
+  });
+});
+
+
+/* Delete from Trash Restore */
+router.get('/trash/delete/:id', async function (req, res, next) {
+  const _id = req.params.id;
+  await itemsModel
+  .deleteOne({ _id: _id })
+  .then(data => {
+    res.status(201).redirect('back');
+    // res.json(data)
+  })
+});
+
+
+
 
 module.exports = router;
