@@ -62,21 +62,19 @@ router.post('/form/(:id)?', async function (req, res, next) {
   req.body = JSON.parse(JSON.stringify(req.body));
   let id = req.params.id;
   let item = Object.assign(req.body);
-  // let imgAvatar = req.files.customerAvatar;
   let imgAvatar = req.files;
 
   if (!imgAvatar || imgAvatar == null) {
+    //! File null.
     let customerAvatar = {
       name: '',
       data: ''
     }
-    let avatarCustom = customerAvatar.name;
   } else {
-    // File exists.
-    console.log(imgAvatar);
-    let avatarCustom = await imgAvatar.customerAvatar.mv(path.resolve('public/images/avatar', imgAvatar.customerAvatar.name));
+    //! File exists.
+    let imgAvatar = req.files.customerAvatar;	  
+    await imgAvatar.mv(path.resolve('public/images/avatar', imgAvatar.name));
   }
-  // // console.log(imgAvatar);
 
   if (id == '' || id == null || id == undefined) {
     item.created = {
@@ -84,12 +82,7 @@ router.post('/form/(:id)?', async function (req, res, next) {
       time: Date.now()
     }
     item.softDelete = '0';
-    if (!imgAvatar || imgAvatar == null) {
-      item.customerAvatar = '';
-    }else{
-      item.customerAvatar = 'images/avatar/' + avatarCustom;
-    }
-
+    (!imgAvatar || imgAvatar == null) ? item.customerAvatar = '' : item.customerAvatar = 'images/avatar/' + avatarCustom;
     await itemsModel.create(item, (err, data) => {
       // res.json(item);
       res.redirect('/');
