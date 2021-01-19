@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
     customerName:String,
-    customerAvatar:String,
+    customerAvatar:{
+        type:String,
+        default:''
+    },
     customerEmail:String,
     customerGender:String, 
     customerDate:Date,
