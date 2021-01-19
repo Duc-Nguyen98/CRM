@@ -129,13 +129,14 @@
                                                 <div class="custom-file">
                                                     
                                                     <input type="file" class="custom-file-input" id="customerAvatar"
-                                                        value="value" name="customerAvatar">
+                                                    value="" name="customerAvatar">
                                                     <% if(items.customerAvatar==null || items.customerAvatar=='' ){ %>
                                                         <label class="custom-file-label" for="customerAvatar">
                                                             Choose file
                                                                 
                                                         </label>
                                                     <% }else{ %>
+                                                       
                                                         <label class="custom-file-label" for="customerAvatar">
                                                             <%= items.customerAvatar %>
                                                         </label>
