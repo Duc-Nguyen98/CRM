@@ -1,42 +1,9 @@
 <% include ./../helpers/imgAvatar %>
 <% include ./../helpers/convertOptionValue %>
-
+<% include ./../helpers/pagination %>
 
     <div class="content-body">
         <div class="container-fluid">
-
-            <!-- Add Order -->
-            <div class="modal fade" id="addOrderModalside">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Create Project</h5>
-                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label class="text-black font-w500">Project Name</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-black font-w500">Deadline</label>
-                                    <input type="date" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-black font-w500">Client Name</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary">CREATE</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
@@ -75,25 +42,52 @@
                                         <!-- <button type="submit" class="btn btn-info">Apply</button> -->
                                     </div>
                                     <div class="form-group col-md-5 d-flex justify-content-end">
+                                        <!-- ? Side menu icon-->
+                                        <!-- <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+                                            <a class="btn-floating btn-large red">
+                                                <i class="large material-icons">mode_edit</i>
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <a id="first-fab" class="btn-floating" data-fabcolor="#45d1ff">
+                                                        <i class="material-icons">insert_chart</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="second-fab" class="btn-floating" data-fabcolor="#7345ff">
+                                                        <i class="material-icons">format_quote</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="third-fab" class="btn-floating" data-fabcolor="#0084ff">
+                                                        <i class="material-icons">publish</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="fourth-fab" class="btn-floating" data-fabcolor="#ff7345">
+                                                        <i class="material-icons">attach_file</i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div> -->
                                         <button type="button" class="icon-button"  onclick="window.location.href='/form/'">
                                             <span class="material-icons">note_add</span>
                                         </button>
                                         <button type="button" class="icon-button"  onclick="window.location.href='/trash/viewRestore'">
                                             <span class="material-icons">restore_from_trash</span>
-                                            <% if(restore !== 0 && restore > 9 ){ %>
+                                            <% if(countRestore !== 0 && countRestore > 9 ){ %>
                                                   <span class="icon-button__badge">9+</span>
-                                            <% }else if(restore !== 0 && restore <= 9){ %>
-                                                  <span class="icon-button__badge"><%= restore %></span>
+                                            <% }else if(countRestore !== 0 && countRestore <= 9){ %>
+                                                  <span class="icon-button__badge"><%= countRestore %></span>
                                             <%  }else{ %> 
                                             <%} %>
-                                            
                                         </button>
-
                                     </div>
                                 </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-responsive-md">
+                                    <!-- !check record exist -->
                                     <% if(items == '' || items == undefined || items == null){ %>
                                         <h4 class="text-center text-capitalize">Oops sorry!!! you don't have any records, please create a new 
                                             <u><b><span onclick="window.location.href='/form/'">this here</span></b></u></h4>  
@@ -133,9 +127,6 @@
                                                             style="border-radius: 50%;
                                                             " width="50px" height="50px" alt="Avatar">
                                                         <%} %>
-
-                                                    
-                                                        
                                                     </td>
                                                     <td>
                                                         <!--! call helper convert Option to String-->
@@ -189,33 +180,9 @@
                                                 </tr>
                                             <% }) %>
                                         </tbody>
-                                        
-                              
                                 </table>
-                                <div class="card-footer">
-                                    <div class="d-flex justify-content-between"> 
-                                        <div>
-                                            <p class="text-monospace">Showing  <b><span class="text-primary">1</span></b> to <b><span class="text-primary">10</span></b> of <b><span class="text-primary">57</span></b> entries</p>
-                                        </div>
-                                        <nav class="d-flex justify-content-end">
-                                            <ul class="pagination pagination-gutter pagination-primary no-bg">
-                                                <li class="page-item page-indicator">
-                                                    <a class="page-link" href="javascript:void()">
-                                                        <i class="la la-angle-left"></i></a>
-                                                </li>
-                                                <li class="page-item "><a class="page-link" href="javascript:void()">1</a>
-                                                </li>
-                                                <li class="page-item active"><a class="page-link" href="javascript:void()">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript:void()">3</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript:void()">4</a></li>
-                                                <li class="page-item page-indicator">
-                                                    <a class="page-link" href="javascript:void()">
-                                                        <i class="la la-angle-right"></i></a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
+                                    <!-- ! record count documents for pagination -->
+                                    <%- paginationHelper(pagination) %> 
                                 <%} %>
                             </div>
                         </div>

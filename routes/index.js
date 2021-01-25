@@ -2,24 +2,40 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const itemsModel = require('./../model/schemasCustom')
+const itemsModel = require('./../model/schemasCustom');
+const paramsHelper = require('./../helper/params');
 
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  const taskOne = itemsModel
+router.get('/',async function (req, res, next) {
+  const configPagination = {
+    totalItemsPerPage: 10,
+    currentPage: 1,
+    totalItems: 1,
+    pageRanges: 4
+  }
+  configPagination.currentPage = parseInt(paramsHelper.getParams(req.query, 'page', 1));
+  await itemsModel // !count record if softDelete: '0'
+    .countDocuments({ softDelete: '0' })
+    .then(data => {
+      configPagination.totalItems = data
+    })
+
+  const taskOne = itemsModel   //!view record limit 10 
     .find({ softDelete: '0' })
-    .limit(10)
+    .skip((configPagination.currentPage - 1) * configPagination.totalItemsPerPage)
+    .limit(configPagination.totalItemsPerPage)
     .sort({ customerName: 1 })
-  // res.json(data)
-  // 
-  const taskTwo = itemsModel
+
+
+  const taskThree = itemsModel // !count record if softDelete: '1'
     .countDocuments({ softDelete: '1' })
 
-  Promise.all([taskOne, taskTwo]).then(([dataOne, dataTwo]) => {
+  Promise.all([taskOne, taskThree]).then(([dataOne, dataThree]) => {
     res.render('./pages/customer', {
       items: dataOne,
-      restore: dataTwo
+      countRestore: dataThree,
+      pagination: configPagination
     })
   })
 
@@ -62,7 +78,7 @@ router.post('/form/(:id)?', async function (req, res, next) {
   req.body = JSON.parse(JSON.stringify(req.body));
   let id = req.params.id;
   let item = Object.assign(req.body);
- 
+
 
 
   // console.log(imgAvatar);
@@ -71,7 +87,7 @@ router.post('/form/(:id)?', async function (req, res, next) {
     let imgAvatar = {
       name: ''
     };
-    if(req.files){
+    if (req.files) {
       imgAvatar = req.files.customerAvatar;
       await imgAvatar.mv(path.resolve('public/images/avatar', imgAvatar.name));
     }
@@ -80,10 +96,10 @@ router.post('/form/(:id)?', async function (req, res, next) {
       time: Date.now()
     }
     item.softDelete = '0';
-    if(imgAvatar.name == undefined || imgAvatar.name == '' || imgAvatar.name == null){
+    if (imgAvatar.name == undefined || imgAvatar.name == '' || imgAvatar.name == null) {
       item.customerAvatar = '';
-    }else{
-      item.customerAvatar = 'images/avatar/'+imgAvatar.name;
+    } else {
+      item.customerAvatar = 'images/avatar/' + imgAvatar.name;
     }
     await itemsModel.create(item, (err, data) => {
       // res.json(item);  
@@ -93,10 +109,10 @@ router.post('/form/(:id)?', async function (req, res, next) {
     let imgAvatar = {
       name: ''
     };
-    if(req.files){
+    if (req.files) {
       imgAvatar = req.files.customerAvatar;
       await imgAvatar.mv(path.resolve('public/images/avatar', imgAvatar.name));
-      imgAvatar.name = 'images/avatar/'+imgAvatar.name;
+      imgAvatar.name = 'images/avatar/' + imgAvatar.name;
     }
     await itemsModel.findByIdAndUpdate({ _id: id }, {
       customerName: item.customerName,
@@ -120,9 +136,6 @@ router.post('/form/(:id)?', async function (req, res, next) {
 
 })
 
-
-
-
 /* GET details an record. */
 router.get('(/trash)?/details/:id', async function (req, res, next) {
   const _id = req.params.id;
@@ -135,7 +148,6 @@ router.get('(/trash)?/details/:id', async function (req, res, next) {
       // res.json(data)
     })
 });
-
 
 /* DELETE delete to trash restore an customer. */
 router.get('/delete/:id', async function (req, res, next) {
@@ -151,14 +163,22 @@ router.get('/delete/:id', async function (req, res, next) {
 
 /* view record to trash restore an customer. */
 router.get('/trash/viewRestore', async function (req, res, next) {
-  await itemsModel
-  .find({ softDelete: '1' })
-  .sort({ customerName: 1 })
-  .then(data =>{
+
+  const taskOne = await itemsModel
+    .find({ softDelete: '1' })
+    .sort({ customerName: 1 })
+
+  const taskTwo = await itemsModel // !count record if softDelete: '1'
+    .countDocuments({ softDelete: '1' })
+
+  Promise.all([taskOne, taskTwo]).then(([dataOne, dataTwo]) => {
     res.render('./pages/restoreCustomer', {
-      items: data,
+      items: dataOne,
+      countRestore: dataTwo,
     })
   })
+
+
 });
 
 /* RESTORE record to table an customer. */
@@ -167,24 +187,20 @@ router.get('/trash/restore/:id', async function (req, res, next) {
   await itemsModel.updateOne({ _id: _id }, {
     softDelete: "0",
   }, (err, data) => {
-    res.redirect('/');
+    res.redirect('back');
     // res.json(data)
   });
 });
-
 
 /* Delete from Trash Restore */
 router.get('/trash/delete/:id', async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel
-  .deleteOne({ _id: _id })
-  .then(data => {
-    res.status(201).redirect('back');
-    // res.json(data)
-  })
+    .deleteOne({ _id: _id })
+    .then(data => {
+      res.status(201).redirect('back');
+      // res.json(data)
+    })
 });
-
-
-
 
 module.exports = router;

@@ -14,8 +14,15 @@
                     <div class="card-body">
                         <div class="bootstrap-media">
                             <div class="media">
-                                <img class="align-self-start mr-3 img-fluid img-thumbnail " style="width: 25%;border-radius: 50%;"
-                                    src="<%- defaultAvatarHelper(items.customerAvatar,items.customerGender )%>" alt="avatar">
+                                <% if(items.customerAvatar == undefined || items.customerAvatar == ''){ %>
+                                    <!--! call helper default avatar -->
+                                    <img src="<%- defaultAvatarHelper(items.customerAvatar,items.customerGender) %>"
+                                    class="align-self-start mr-3 img-fluid img-thumbnail " style="width: 25%;border-radius: 50%;" alt="Avatar">
+                                <%}else{ %>
+                                    <img src="<%= items.customerAvatar %>"
+                                    class="align-self-start mr-3 img-fluid img-thumbnail " style="width: 25%;border-radius: 50%;"" alt="Avatar">
+                                <%} %>
+                                
                                 <div class="media-body mx-3">
                                     <div class="row">
                                         <div class="col-6">
