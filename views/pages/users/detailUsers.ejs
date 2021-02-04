@@ -1,0 +1,89 @@
+<% include ./../../helpers/imgAvatar %>
+<% include ./../../helpers/convertOptionValue %>
+
+
+<div class="content-body" style="min-height: 1113px;">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Align Top</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="bootstrap-media">
+                            <div class="media">
+                                <% if(items.customerAvatar == undefined || items.customerAvatar == ''){ %>
+                                    <!--! call helper default avatar -->
+                                    <img src="<%- defaultAvatarHelper(items.customerAvatar,items.customerGender) %>"
+                                    class="align-self-start mr-3 img-fluid img-thumbnail " style="width: 25%;border-radius: 50%;" alt="Avatar">
+                                <%}else{ %>
+                                    <img src="<%= items.customerAvatar %>"
+                                    class="align-self-start mr-3 img-fluid img-thumbnail " style="width: 25%;border-radius: 50%;"" alt="Avatar">
+                                <%} %>
+                                
+                                <div class="media-body mx-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Name:</b>
+                                                <%= items.customerName %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Email:</b>
+                                                <%= items.customerEmail %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Gender:</b>
+                                                 <!--! call helper convert Option to String-->
+                                                 <span><%= convertOptionValueHelper(items.customerGender,['Male','Female']) %></span>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Date:</b>
+                                                <%= moment(items.customerDate ).format('DD-MM-YYYY'); %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Telephone:</b>
+                                                <%= items.customerTelephone %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Job:</b>
+                                                <%= items.customerJob %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>Address:</b>
+                                                <%= items.customerAddress %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>GroupCustomer:</b>
+                                                 <!--! call helper convert Option to String-->
+                                                 <span><%= convertOptionValueHelper(items.customerGroupId,['Customer Normal+','Customers Potential','Customers Vip']) %></span>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>createdAt:</b>
+                                                <%= moment(items.createdAt ).format('HH:mm | DD-MM-YYYY'); %>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="mt-0 py-2"><b>updatedAt:</b>
+                                                <%= moment(items.updatedAt ).format('HH:mm | DD-MM-YYYY'); %>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

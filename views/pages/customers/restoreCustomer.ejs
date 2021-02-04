@@ -1,0 +1,162 @@
+<% include ./../../helpers/imgAvatar %>
+<% include ./../../helpers/convertOptionValue %>
+
+    <div class="content-body">
+        <div class="container-fluid">
+            <div class="page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Bootstrap</a>
+                    </li>
+                </ol>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header bgpurple">
+                            <h4 class="card-title text-white">Table Restore Customers </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                              
+                                <table class="table table-responsive-md">
+                                    <% if(items == '' || items == undefined || items == null){ %>
+                                        <h4 class="text-center text-capitalize">no records are in the trash, go back to the  <u><b><span onclick="window.location.href='/customer'">homepage</span></b></u></h4>  
+                                    <%}else{ %>
+                                        <thead>
+                                            <tr>
+                                                <th class="width80"><strong>#</strong></th>
+                                                <th><strong>Name</strong></th>
+                                                <th><strong>Avatar</strong></th>
+                                                <th><strong>Genders</strong></th>
+                                                <th><strong>BirthDay</strong></th>
+                                                <th><strong>EMail</strong></th>
+                                                <!-- <th><strong>STATUS</strong></th> -->
+                                                <th><strong>CreatedAt</strong></th>
+                                                <th><strong>UpdatedAt</strong></th>
+                                                <th><strong>Action</strong></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% items.forEach((item,index)=>{ %>
+                                                <tr>
+                                                    <td><strong>
+                                                            <%= index + 1 %>
+                                                        </strong></td>
+                                                    <td>
+                                                        <%= item.customerName%>
+                                                    </td>
+                                                    <td>
+
+                                                        <% if(item.customerAvatar == undefined || item.customerAvatar == ''){ %>
+                                                            <!--! call helper default avatar -->
+                                                            <img src="<%- defaultAvatarHelper(item.customerAvatar,item.customerGender) %>"
+                                                            style="border-radius: 50%;
+                                                            " width="50px" height="50px" alt="Avatar">
+                                                        <%}else{ %>
+                                                            <img src="<%= item.customerAvatar %>"
+                                                            style="border-radius: 50%;
+                                                            " width="50px" height="50px" alt="Avatar">
+                                                        <%} %>
+
+                                                    
+                                                        
+                                                    </td>
+                                                    <td>
+                                                        <!--! call helper convert Option to String-->
+                                                    <span><%= convertOptionValueHelper(item.customerGender,['Male','Female']) %></span>
+                                                    </td>
+                                                    <td>
+                                                        <!-- 'HH:mm DD-MM-YYYY'-->
+                                                        <%= moment(item.customerDate ).format('DD-MM-YYYY');%>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.customerEmail %>
+                                                    </td>
+                                                    <td>
+                                                        <span><i class="fa fa-user"></i> <%= item.created.nameCreateAt %></span> <br>
+                                                        <!-- 'HH:mm DD-MM-YYYY'-->
+                                                    <span><i class="fa fa-history"></i> <%= moment(item.created.time ).format('HH:mm | DD-MM-YYYY');%></span> 
+                                                    </td>
+                                                    <td>
+
+                                                        <% if(item.modified.nameUpdateAt==undefined || item.modified.nameUpdateAt=='' ){  %>
+                                                            <span><i class="fa fa-user"></i> <%= item.created.nameCreateAt %></span> <br>
+                                                        <%}else{ %>
+                                                            <span><i class="fa fa-user"></i> <%= item.modified.nameUpdateAt %></span> <br>
+                                                        <%} %>
+                                                        <!-- 'HH:mm DD-MM-YYYY'-->
+                                                    <span><i class="fa fa-history"></i> <%= moment(item.modified.time ).format('HH:mm | DD-MM-YYYY');%></span>
+                                                        
+                                                    </td>
+                                                    <!-- <td><span
+                                                        class="badge light badge-success">Successful</span>
+                                                </td> -->
+                                                    <!-- <td>$21.56</td> -->
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn btn-success light sharp"
+                                                                data-toggle="dropdown">
+                                                                <svg width="20px" height="20px" viewBox="0 0 24 24"
+                                                                    version="1.1">
+                                                                    <g stroke="none" stroke-width="1" fill="none"
+                                                                        fill-rule="evenodd">
+                                                                        <rect x="0" y="0" width="24" height="24" />
+                                                                        <circle fill="#000000" cx="5" cy="12" r="2" />
+                                                                        <circle fill="#000000" cx="12" cy="12" r="2" />
+                                                                        <circle fill="#000000" cx="19" cy="12" r="2" />
+                                                                    </g>
+                                                                </svg>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item"
+                                                                    href="/customer/trash/details/<%= item.id %>">Detail</a>
+                                                                <a class="dropdown-item "
+                                                                    href="/customer/trash/restore/<%= item.id %>">Restore</a>
+                                                                <a class="dropdown-item "
+                                                                    href="/customer/trash/delete/<%= item.id %>">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                      
+                                </table>
+                                  <!-- !check record count documents for pagination -->
+                                  <% if(countRestore >10 ){ %>
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-between"> 
+                                                <div>
+                                                    <p class="text-monospace">Showing  <b><span class="text-primary">1</span></b> to <b><span class="text-primary">10</span></b> of <b><span class="text-primary">57</span></b> entries</p>
+                                                </div>
+                                                <nav class="d-flex justify-content-end">
+                                                    <ul class="pagination pagination-gutter pagination-primary no-bg">
+                                                        <li class="page-item page-indicator">
+                                                            <a class="page-link" href="javascript:void()">
+                                                                <i class="la la-angle-left"></i></a>
+                                                        </li>
+                                                        <li class="page-item "><a class="page-link" href="javascript:void()">1</a>
+                                                        </li>
+                                                        <li class="page-item active"><a class="page-link" href="javascript:void()">2</a></li>
+                                                        <li class="page-item"><a class="page-link" href="javascript:void()">3</a></li>
+                                                        <li class="page-item"><a class="page-link" href="javascript:void()">4</a></li>
+                                                        <li class="page-item page-indicator">
+                                                            <a class="page-link" href="javascript:void()">
+                                                                <i class="la la-angle-right"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <%} %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

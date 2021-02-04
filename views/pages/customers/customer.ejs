@@ -1,6 +1,6 @@
-<% include ./../helpers/imgAvatar %>
-<% include ./../helpers/convertOptionValue %>
-<% include ./../helpers/pagination %>
+<% include ./../../helpers/imgAvatar %>
+<% include ./../../helpers/convertOptionValue %>
+<% include ./../../helpers/pagination %>
 
     <div class="content-body">
         <div class="container-fluid">
@@ -17,7 +17,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header bgpurple">
-                            <h4 class="card-title text-white">Recent Payments Queue</h4>
+                            <h4 class="card-title text-white">Table Customers</h4>
                         </div>
                         <!-- <div class="card-header">
                             <div class="input-group search-area d-lg-inline-flex d-none">
@@ -70,10 +70,10 @@
                                                 </li>
                                             </ul>
                                         </div> -->
-                                        <button type="button" class="icon-button"  onclick="window.location.href='/form/'">
+                                        <button type="button" class="icon-button"  onclick="window.location.href='/customer/form/'">
                                             <span class="material-icons">note_add</span>
                                         </button>
-                                        <button type="button" class="icon-button"  onclick="window.location.href='/trash/viewRestore'">
+                                        <button type="button" class="icon-button"  onclick="window.location.href='/customer/trash/viewRestore'">
                                             <span class="material-icons">restore_from_trash</span>
                                             <% if(countRestore !== 0 && countRestore > 9 ){ %>
                                                   <span class="icon-button__badge">9+</span>
@@ -90,7 +90,7 @@
                                     <!-- !check record exist -->
                                     <% if(items == '' || items == undefined || items == null){ %>
                                         <h4 class="text-center text-capitalize">Oops sorry!!! you don't have any records, please create a new 
-                                            <u><b><span onclick="window.location.href='/form/'">this here</span></b></u></h4>  
+                                            <u><b><span onclick="window.location.href='/customer/form/'">this here</span></b></u></h4>  
                                     <% }else{ %> 
                                         <thead>
                                             <tr>
@@ -170,10 +170,10 @@
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <a class="dropdown-item"
-                                                                    href="details/<%= item.id %>">Detail</a>
-                                                                <a class="dropdown-item" href="form/<%= item.id %>">Edit</a>
+                                                                    href="/customer/details/<%= item.id %>">Detail</a>
+                                                                <a class="dropdown-item" href="/customer/form/<%= item.id %>">Edit</a>
                                                                 <a class="dropdown-item "
-                                                                    href="delete/<%= item.id %>">Delete</a>
+                                                                    href="/customer/delete/<%= item.id %>">Delete</a>
                                                             </div>
                                                         </div>
                                                     </td>

@@ -51,11 +51,9 @@
                 xhtmlPages += `<li class="page-item "><a class="page-link" href="/?page=${i}">${i}</a></li>`;
                 }
                 }
-                xhtmlPagination = `<ul class="pagination pagination-gutter pagination-primary no-bg"> ${xhtmlStart}
+                xhtmlPagination = `<ul class="pagination pagination-gutter pagination-primary no-bg" style="cursor: pointer;"> ${xhtmlStart}
                     ${xhtmlPrevious} ${xhtmlPages} ${xhtmlNext} ${xhtmlEnd} </ul>`;
                 }
-
-
 
                 return`
                 <div class="card-footer">

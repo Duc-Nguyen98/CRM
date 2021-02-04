@@ -1,6 +1,6 @@
-<% include ./../helpers/imgAvatar %>
-<% include ./../helpers/convertOptionValue %>
-
+<% include ./../../helpers/imgAvatar %>
+<% include ./../../helpers/convertOptionValue %>
+<% include ./../../helpers/pagination %>
 
     <div class="content-body">
         <div class="container-fluid">
@@ -9,6 +9,7 @@
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
                     <li class="breadcrumb-item active"><a href="javascript:void(0)">Bootstrap</a>
                     </li>
+
                 </ol>
             </div>
             <!-- row -->
@@ -16,15 +17,81 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header bgpurple">
-                            <h4 class="card-title text-white">Recent Payments Queue</h4>
+                            <h4 class="card-title text-white">Table Customers</h4>
                         </div>
+                        <!-- <div class="card-header">
+                            <div class="input-group search-area d-lg-inline-flex d-none">
+                                <div class="input-group-append">    
+                                    <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search here...">
+                            </div>
+                        </div> -->
                         <div class="card-body">
+                            <div class="zcontrols">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <!-- <select id="inputState" class="form-control default-select"> -->
+                                            <!-- <option selected>Choose...</option>
+                                            <option>Delete</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option> -->
+                                        <!-- </select> -->
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <!-- <button type="submit" class="btn btn-info">Apply</button> -->
+                                    </div>
+                                    <div class="form-group col-md-5 d-flex justify-content-end">
+                                        <!-- ? Side menu icon-->
+                                        <!-- <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+                                            <a class="btn-floating btn-large red">
+                                                <i class="large material-icons">mode_edit</i>
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <a id="first-fab" class="btn-floating" data-fabcolor="#45d1ff">
+                                                        <i class="material-icons">insert_chart</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="second-fab" class="btn-floating" data-fabcolor="#7345ff">
+                                                        <i class="material-icons">format_quote</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="third-fab" class="btn-floating" data-fabcolor="#0084ff">
+                                                        <i class="material-icons">publish</i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a id="fourth-fab" class="btn-floating" data-fabcolor="#ff7345">
+                                                        <i class="material-icons">attach_file</i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div> -->
+                                        <button type="button" class="icon-button"  onclick="window.location.href='/customer/form/'">
+                                            <span class="material-icons">note_add</span>
+                                        </button>
+                                        <button type="button" class="icon-button"  onclick="window.location.href='/customer/trash/viewRestore'">
+                                            <span class="material-icons">restore_from_trash</span>
+                                            <% if(countRestore !== 0 && countRestore > 9 ){ %>
+                                                  <span class="icon-button__badge">9+</span>
+                                            <% }else if(countRestore !== 0 && countRestore <= 9){ %>
+                                                  <span class="icon-button__badge"><%= countRestore %></span>
+                                            <%  }else{ %> 
+                                            <%} %>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
-                              
                                 <table class="table table-responsive-md">
+                                    <!-- !check record exist -->
                                     <% if(items == '' || items == undefined || items == null){ %>
-                                        <h4 class="text-center text-capitalize">no records are in the trash, go back to the  <u><b><span onclick="window.location.href='/'">homepage</span></b></u></h4>  
-                                    <%}else{ %>
+                                        <h4 class="text-center text-capitalize">Oops sorry!!! you don't have any records, please create a new 
+                                            <u><b><span onclick="window.location.href='/customer/form/'">this here</span></b></u></h4>  
+                                    <% }else{ %> 
                                         <thead>
                                             <tr>
                                                 <th class="width80"><strong>#</strong></th>
@@ -50,7 +117,6 @@
                                                         <%= item.customerName%>
                                                     </td>
                                                     <td>
-
                                                         <% if(item.customerAvatar == undefined || item.customerAvatar == ''){ %>
                                                             <!--! call helper default avatar -->
                                                             <img src="<%- defaultAvatarHelper(item.customerAvatar,item.customerGender) %>"
@@ -61,9 +127,6 @@
                                                             style="border-radius: 50%;
                                                             " width="50px" height="50px" alt="Avatar">
                                                         <%} %>
-
-                                                    
-                                                        
                                                     </td>
                                                     <td>
                                                         <!--! call helper convert Option to String-->
@@ -82,7 +145,6 @@
                                                     <span><i class="fa fa-history"></i> <%= moment(item.created.time ).format('HH:mm | DD-MM-YYYY');%></span> 
                                                     </td>
                                                     <td>
-
                                                         <% if(item.modified.nameUpdateAt==undefined || item.modified.nameUpdateAt=='' ){  %>
                                                             <span><i class="fa fa-user"></i> <%= item.created.nameCreateAt %></span> <br>
                                                         <%}else{ %>
@@ -90,12 +152,7 @@
                                                         <%} %>
                                                         <!-- 'HH:mm DD-MM-YYYY'-->
                                                     <span><i class="fa fa-history"></i> <%= moment(item.modified.time ).format('HH:mm | DD-MM-YYYY');%></span>
-                                                        
                                                     </td>
-                                                    <!-- <td><span
-                                                        class="badge light badge-success">Successful</span>
-                                                </td> -->
-                                                    <!-- <td>$21.56</td> -->
                                                     <td>
                                                         <div class="dropdown">
                                                             <button type="button" class="btn btn-success light sharp"
@@ -113,46 +170,19 @@
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <a class="dropdown-item"
-                                                                    href="trash/details/<%= item.id %>">Detail</a>
+                                                                    href="/customer/details/<%= item.id %>">Detail</a>
+                                                                <a class="dropdown-item" href="/customer/form/<%= item.id %>">Edit</a>
                                                                 <a class="dropdown-item "
-                                                                    href="trash/restore/<%= item.id %>">Restore</a>
-                                                                <a class="dropdown-item "
-                                                                    href="trash/delete/<%= item.id %>">Delete</a>
+                                                                    href="/customer/delete/<%= item.id %>">Delete</a>
                                                             </div>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             <% }) %>
                                         </tbody>
-                                      
                                 </table>
-                                  <!-- !check record count documents for pagination -->
-                                  <% if(countRestore >10 ){ %>
-                                        <div class="card-footer">
-                                            <div class="d-flex justify-content-between"> 
-                                                <div>
-                                                    <p class="text-monospace">Showing  <b><span class="text-primary">1</span></b> to <b><span class="text-primary">10</span></b> of <b><span class="text-primary">57</span></b> entries</p>
-                                                </div>
-                                                <nav class="d-flex justify-content-end">
-                                                    <ul class="pagination pagination-gutter pagination-primary no-bg">
-                                                        <li class="page-item page-indicator">
-                                                            <a class="page-link" href="javascript:void()">
-                                                                <i class="la la-angle-left"></i></a>
-                                                        </li>
-                                                        <li class="page-item "><a class="page-link" href="javascript:void()">1</a>
-                                                        </li>
-                                                        <li class="page-item active"><a class="page-link" href="javascript:void()">2</a></li>
-                                                        <li class="page-item"><a class="page-link" href="javascript:void()">3</a></li>
-                                                        <li class="page-item"><a class="page-link" href="javascript:void()">4</a></li>
-                                                        <li class="page-item page-indicator">
-                                                            <a class="page-link" href="javascript:void()">
-                                                                <i class="la la-angle-right"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                    <% } %>
+                                    <!-- ! record count documents for pagination -->
+                                    <%- paginationHelper(pagination) %> 
                                 <%} %>
                             </div>
                         </div>

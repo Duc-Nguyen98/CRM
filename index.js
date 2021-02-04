@@ -11,9 +11,13 @@ const cron = require('node-cron');
 const shell = require('shelljs');
 const fileUpload = require('express-fileupload')
 
+//-u global jwt
+global.jwt = require("jsonwebtoken");
 
 
+// ! Settings Router
 const indexRouter = require('./routes/index');
+const customersRouter = require('./routes/customers');
 const app = express();
 
 
@@ -54,6 +58,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/customer', customersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
