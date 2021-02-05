@@ -1,6 +1,9 @@
 <% include ./../../helpers/imgAvatar %>
 <% include ./../../helpers/convertOptionValue %>
 <% include ./../../helpers/pagination %>
+<% include ./../../helpers/menuNavigation %>
+
+    <%- menuInfoNavigation(userObj) %>
 
     <div class="content-body">
         <div class="container-fluid">
@@ -17,7 +20,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header bgpurple">
-                            <h4 class="card-title text-white">Table Customers</h4>
+                            <h4 class="card-title text-white">Table Customers</h4>  
                         </div>
                         <!-- <div class="card-header">
                             <div class="input-group search-area d-lg-inline-flex d-none">

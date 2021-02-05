@@ -8,7 +8,6 @@ const paramsHelper = require('../helper/params');
 
 const checkAuthentication = require('../utils/checkAuthen')
 
-
 /* GET home page. */
 router.get('/',checkAuthentication,async function (req, res, next) {
   const configPagination = {
@@ -38,6 +37,7 @@ router.get('/',checkAuthentication,async function (req, res, next) {
 
   Promise.all([taskOne, taskThree]).then(([dataOne, dataThree]) => {
     res.render('./pages/customers/customer', {
+      userObj:userObj, //? get value object from checkAuthentication
       items: dataOne,
       countRestore: dataThree,
       pagination: configPagination

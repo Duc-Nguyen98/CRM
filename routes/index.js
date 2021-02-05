@@ -20,6 +20,7 @@ router.post('/', async function (req, res, next) {
   await usersModel.findOne({
     account: account,
     password: account,
+    softDelete:0
   })
     .then(data => {
       // console.log(data)
@@ -34,7 +35,6 @@ router.post('/', async function (req, res, next) {
         // return res.json('fail');
         return res.redirect('/')
       }
-
     })
     .catch(err => {
       // res.status(500);

@@ -9,13 +9,16 @@ const checkAuthentication = async (req, res, next) => {
         let idUser = jwt.verify(token, 'mk');
         await usersModel
             .findOne({
-                _id: idUser._id
+                _id: idUser._id,
             })
             .then(data => {
                 if (data) {
                     userObj = data;
                     next();
                 }
+            })
+            .catch(err =>{
+                res.redirect('/');
             })
     } catch (err) {
         res.redirect('/');
