@@ -1,0 +1,13 @@
+<% sortHelper=(collection,name, sortField, sortFieldCurrent, sortTypeCurrent)=> {
+    let order = (sortTypeCurrent == 'asc') ? 'desc' : 'asc';
+    let link = linkPrefix+ '/sort/' + sortField + '/' + order;
+    let icon = `<i class="fa fw fa-sort"></i>`;
+    if(sortField == sortFieldCurrent) {
+    icon = `<i class="fa fw fa-sort-${sortTypeCurrent}"></i>`;
+    }
+    let xhtmlResult = `<th class="text-center pointer">
+        <a href="${link}" class="title-col">${name} ${icon}</a>
+        </th>`;
+    return xhtmlResult;
+}
+%>

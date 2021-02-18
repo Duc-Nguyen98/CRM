@@ -8,8 +8,8 @@ const paramsHelper = require('../helper/params');
 
 const checkAuthentication = require('../utils/checkAuthen')
 
-/* GET home page. */
-router.get('/',checkAuthentication,async function (req, res, next) {
+/*  GET home page. */
+router.get('/', checkAuthentication, async function (req, res, next) {
   const configPagination = {
     totalItemsPerPage: 10,
     currentPage: 1,
@@ -17,6 +17,17 @@ router.get('/',checkAuthentication,async function (req, res, next) {
     pageRanges: 4
   }
   configPagination.currentPage = parseInt(paramsHelper.getParams(req.query, 'page', 1));
+
+
+  // let sortField = paramsHelper.getParams(req.session, 'sort_field', 'name');
+  // let sortType = paramsHelper.getParams(req.session, 'sort_type', 'asc');
+
+
+  // let sort = {};
+  // sort[sortField] = sortType;
+  // console.log(sortField,sortType);
+
+
   await itemsModel // !count record if softDelete: '0'
     .countDocuments({ softDelete: '0' })
     .then(data => {
@@ -25,22 +36,23 @@ router.get('/',checkAuthentication,async function (req, res, next) {
 
   const taskOne = itemsModel   //!view record limit 10 
     .find({ softDelete: '0' })
+    // .sort(sort)
     .skip((configPagination.currentPage - 1) * configPagination.totalItemsPerPage)
     .limit(configPagination.totalItemsPerPage)
-    .sort({ customerName: 1 })
-
 
   const taskThree = itemsModel // !count record if softDelete: '1'
     .countDocuments({ softDelete: '1' })
 
-  console.log(userObj);
+  // console.log(userObj);
 
   Promise.all([taskOne, taskThree]).then(([dataOne, dataThree]) => {
     res.render('./pages/customers/customer', {
-      userObj:userObj, //? get value object from checkAuthentication
+      userObj: userObj, //? get value object from checkAuthentication
       items: dataOne,
       countRestore: dataThree,
-      pagination: configPagination
+      pagination: configPagination,
+      // sortField: sortField,
+      // sortType: sortType
     })
   })
 
@@ -50,7 +62,7 @@ router.get('/',checkAuthentication,async function (req, res, next) {
   *GET form add || edit 
 */
 
-router.get('/form/(:id)?',checkAuthentication, function (req, res, next) {
+router.get('/form/(:id)?', checkAuthentication, function (req, res, next) {
   const _id = req.params.id;
   const objectNull = {
     customerName: '',
@@ -79,7 +91,7 @@ router.get('/form/(:id)?',checkAuthentication, function (req, res, next) {
   }
 });
 
-router.post('/form/(:id)?',checkAuthentication, async function (req, res, next) {
+router.post('/form/(:id)?', checkAuthentication, async function (req, res, next) {
   req.body = JSON.parse(JSON.stringify(req.body));
   let id = req.params.id;
   let item = Object.assign(req.body);
@@ -142,7 +154,7 @@ router.post('/form/(:id)?',checkAuthentication, async function (req, res, next) 
 })
 
 /* GET details an record. */
-router.get('(/trash)?/details/:id',checkAuthentication, async function (req, res, next) {
+router.get('(/trash)?/details/:id', checkAuthentication, async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel
     .findById({ _id: _id })
@@ -155,7 +167,7 @@ router.get('(/trash)?/details/:id',checkAuthentication, async function (req, res
 });
 
 /* DELETE delete to trash restore an customer. */
-router.get('/delete/:id',checkAuthentication, async function (req, res, next) {
+router.get('/delete/:id', checkAuthentication, async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel.updateOne({ _id: _id }, {
     softDelete: "1",
@@ -167,7 +179,7 @@ router.get('/delete/:id',checkAuthentication, async function (req, res, next) {
 
 
 /* view record to trash restore an customer. */
-router.get('/trash/viewRestore',checkAuthentication, async function (req, res, next) {
+router.get('/trash/viewRestore', checkAuthentication, async function (req, res, next) {
 
   const taskOne = await itemsModel
     .find({ softDelete: '1' })
@@ -185,7 +197,7 @@ router.get('/trash/viewRestore',checkAuthentication, async function (req, res, n
 });
 
 /* RESTORE record to table an customer. */
-router.get('/trash/restore/:id',checkAuthentication, async function (req, res, next) {
+router.get('/trash/restore/:id', checkAuthentication, async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel.updateOne({ _id: _id }, {
     softDelete: "0",
@@ -196,7 +208,7 @@ router.get('/trash/restore/:id',checkAuthentication, async function (req, res, n
 });
 
 /* Delete from Trash Restore */
-router.get('/trash/delete/:id',checkAuthentication, async function (req, res, next) {
+router.get('/trash/delete/:id', checkAuthentication, async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel
     .deleteOne({ _id: _id })
@@ -206,4 +218,13 @@ router.get('/trash/delete/:id',checkAuthentication, async function (req, res, ne
     })
 });
 
+router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
+  req.session.sortField = paramsHelper.getParams(req.params,'sort_field','customerName');
+  req.session.sortType = paramsHelper.getParams(req.params,'sort_type','asc');
+
+  // req.session.sortField = sort_field;
+  // req.session.sortType = sort_type;
+  console.log(req.session.sortField,req.session.sortType)
+  // console.log(sort_field,sort_type)
+});
 module.exports = router;

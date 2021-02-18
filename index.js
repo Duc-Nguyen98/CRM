@@ -7,12 +7,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const expressLayouts = require('express-ejs-layouts');
 const moment = require('moment');
-const cron = require('node-cron');
-const shell = require('shelljs');
 const fileUpload = require('express-fileupload')
+var session = require('express-session')
+
 
 //-u global jwt
 global.jwt = require("jsonwebtoken");
+
 
 
 // ! Settings Router
@@ -31,6 +32,12 @@ const db = mongoose.connection;
 // !setup fileUpload
 app.use(fileUpload())
 
+// ! Settings express-session
+app.use(session({
+  secret: 'account',
+  resave: false,
+  saveUninitialized: true
+}));
 
 // !setup body-parser 
 // parse application/x-www-form-urlencoded
@@ -67,24 +74,24 @@ app.use(function (req, res, next) {
 
 
 
-  // error handler
-  app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-  });
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 
-  // !Debug send Mail
-  // cron.schedule('* * * * *', () => {
-  //   console.log('running a task every minute');
-  //   if(shell.exec("node cronSchedule/hello.js").code !== 0){
-  //     console.log('something went wrong !');
-  //   }
-  // });
+// !Debug send Mail
+// cron.schedule('* * * * *', () => {
+//   console.log('running a task every minute');
+//   if(shell.exec("node cronSchedule/hello.js").code !== 0){
+//     console.log('something went wrong !');
+//   }
+// });
 
-  module.exports = app;
+module.exports = app;
