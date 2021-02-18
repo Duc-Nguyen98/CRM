@@ -25,7 +25,6 @@ router.get('/', checkAuthentication, async function (req, res, next) {
 
   let sort = {};
   sort[sortField] = sortType;
-  console.log(sort);
 
 
   await itemsModel // !count record if softDelete: '0'
@@ -221,7 +220,7 @@ router.get('/trash/delete/:id', checkAuthentication, async function (req, res, n
 router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
   req.session.sort_field = req.params.sort_field;
   req.session.sort_type = req.params.sort_type;
-  console.log(req.session.sort_field,req.session.sort_type)
+  // console.log(req.session.sort_field,req.session.sort_type)
   res.redirect('back');
 });
 module.exports = router;

@@ -1,8 +1,6 @@
 <% sortHelper=(name, sortField, sortFieldCurrent, sortTypeCurrent)=> {
-    console.log(sortFieldCurrent)
     let order = (sortTypeCurrent == 'asc') ? 'desc' : 'asc';
     let link = '/customer'+ '/sort/' + sortField + '/' + order;
-    // console.log(link);
     let icon = `<i class="fa fw fa-sort"></i>`;
     if(sortField == sortFieldCurrent) {
     icon = `<i class="fa fw fa-sort-${sortTypeCurrent}"></i>`;

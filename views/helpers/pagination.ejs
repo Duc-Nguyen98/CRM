@@ -24,15 +24,15 @@
 
 
     if(currentPage > 1){
-    xhtmlStart = `<li class="page-item page-indicator"><a class="page-link" href="/?page=1"><i
+    xhtmlStart = `<li class="page-item page-indicator"><a class="page-link" href="/customer/?page=1"><i
                 class="la la-angle-double-left"></i></a></li>`;
-    xhtmlPrevious = `<li class="page-item page-indicator "><a class="page-link" href="/?page=${currentPage-1}"><i
+    xhtmlPrevious = `<li class="page-item page-indicator "><a class="page-link" href="/customer/?page=${currentPage-1}"><i
                 class="la la-angle-left"></i></a></li>`;
     }
 
     if(currentPage < totalPages){ xhtmlNext=`<li class="page-item page-indicator "><a class="page-link"
-            href="/?page=${currentPage+1}"> <i class="la la-angle-right"></i></a></li>`;
-        xhtmlEnd = `<li class="page-item page-indicator"><a class="page-link" href="/?page=${totalPages}"><i
+            href="/customer/?page=${currentPage+1}"> <i class="la la-angle-right"></i></a></li>`;
+        xhtmlEnd = `<li class="page-item page-indicator"><a class="page-link" href="/customer/?page=${totalPages}"><i
                     class="la la-angle-double-right"></i></a></li>`;
         }
 
@@ -48,7 +48,7 @@
             for (let i = min; i <= max; i++) { if(i==currentPage) { xhtmlPages +=`<li class="page-item active"><a
                     class="page-link">${i}</a></li>`;
                 }else{
-                xhtmlPages += `<li class="page-item "><a class="page-link" href="/?page=${i}">${i}</a></li>`;
+                xhtmlPages += `<li class="page-item "><a class="page-link" href="/customer/?page=${i}">${i}</a></li>`;
                 }
                 }
                 xhtmlPagination = `<ul class="pagination pagination-gutter pagination-primary no-bg" style="cursor: pointer;"> ${xhtmlStart}
