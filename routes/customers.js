@@ -19,13 +19,13 @@ router.get('/', checkAuthentication, async function (req, res, next) {
   configPagination.currentPage = parseInt(paramsHelper.getParams(req.query, 'page', 1));
 
 
-  // let sortField = paramsHelper.getParams(req.session, 'sort_field', 'name');
-  // let sortType = paramsHelper.getParams(req.session, 'sort_type', 'asc');
+  let sortField = req.session.sort_field;
+  let sortType = req.session.sort_type;
 
 
-  // let sort = {};
-  // sort[sortField] = sortType;
-  // console.log(sortField,sortType);
+  let sort = {};
+  sort[sortField] = sortType;
+  console.log(sort);
 
 
   await itemsModel // !count record if softDelete: '0'
@@ -36,7 +36,7 @@ router.get('/', checkAuthentication, async function (req, res, next) {
 
   const taskOne = itemsModel   //!view record limit 10 
     .find({ softDelete: '0' })
-    // .sort(sort)
+    .sort(sort)
     .skip((configPagination.currentPage - 1) * configPagination.totalItemsPerPage)
     .limit(configPagination.totalItemsPerPage)
 
@@ -51,8 +51,8 @@ router.get('/', checkAuthentication, async function (req, res, next) {
       items: dataOne,
       countRestore: dataThree,
       pagination: configPagination,
-      // sortField: sortField,
-      // sortType: sortType
+      sortField: sortField,
+      sortType: sortType
     })
   })
 
@@ -219,12 +219,9 @@ router.get('/trash/delete/:id', checkAuthentication, async function (req, res, n
 });
 
 router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
-  req.session.sortField = paramsHelper.getParams(req.params,'sort_field','customerName');
-  req.session.sortType = paramsHelper.getParams(req.params,'sort_type','asc');
-
-  // req.session.sortField = sort_field;
-  // req.session.sortType = sort_type;
-  console.log(req.session.sortField,req.session.sortType)
-  // console.log(sort_field,sort_type)
+  req.session.sort_field = req.params.sort_field;
+  req.session.sort_type = req.params.sort_type;
+  console.log(req.session.sort_field,req.session.sort_type)
+  res.redirect('back');
 });
 module.exports = router;

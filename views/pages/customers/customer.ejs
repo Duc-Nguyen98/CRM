@@ -91,13 +91,14 @@
                                         <thead>
                                             <tr>
                                                 <th class="width80"><strong>#</strong></th>
-                                                <th class="text-center pointer">
-                                                    <a href="/customer/sort/name/desc" class="title-col">Name <i class="fa fw fa-sort-desc"></i></a>
-                                                </th>
+                                                <%- sortHelper('customerName','customerName',sortField,sortType) %>
+                                                <!-- <th class="text-center pointer">
+                                                    <a href="/customer/sort/customerName/desc" class="title-col">Name <i class="fa fw fa-sort-desc"></i></a>
+                                                </th> -->
                                                 <th><strong>Avatar</strong></th>
-                                                <th><strong>Genders</strong></th>
-                                                <th><strong>BirthDay</strong></th>
-                                                <th><strong>EMail</strong></th>
+                                                <%- sortHelper('customerGender','customerGender',sortField,sortType) %>
+                                                <%- sortHelper('customerDate','customerDate',sortField,sortType) %>
+                                                <%- sortHelper('customerEmail','customerEmail',sortField,sortType) %>
                                                 <!-- <th><strong>STATUS</strong></th> -->
                                                 <th><strong>CreatedAt</strong></th>
                                                 <th><strong>UpdatedAt</strong></th>
