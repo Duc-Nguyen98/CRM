@@ -21,6 +21,10 @@ const schema = new mongoose.Schema({
         nameUpdateAt : String,
         time : Date
     },
+    softErase:{
+        nameSoftEraseAt : String,
+        time : Date
+    },
     softDelete:String,
     
 });

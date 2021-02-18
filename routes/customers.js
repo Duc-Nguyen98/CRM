@@ -8,7 +8,7 @@ const paramsHelper = require('../helper/params');
 
 const checkAuthentication = require('../utils/checkAuthen')
 
-/*  GET home page. */
+/*! GET home page. */
 router.get('/', checkAuthentication, async function (req, res, next) {
   const configPagination = {
     totalItemsPerPage: 10,
@@ -96,9 +96,6 @@ router.post('/form/(:id)?', checkAuthentication, async function (req, res, next)
   let item = Object.assign(req.body);
 
 
-
-  // console.log(imgAvatar);
-
   if (id == '' || id == null || id == undefined) {
     let imgAvatar = {
       name: ''
@@ -107,11 +104,17 @@ router.post('/form/(:id)?', checkAuthentication, async function (req, res, next)
       imgAvatar = req.files.customerAvatar;
       await imgAvatar.mv(path.resolve('public/images/avatar', imgAvatar.name));
     }
+
     item.created = {
-      nameCreateAt: 'admin',
+      nameCreateAt: userObj.name,
       time: Date.now()
-    }
+    };
+    item.modified = {
+      nameUpdateAt: userObj.name,
+      time: Date.now()
+    };
     item.softDelete = '0';
+    
     if (imgAvatar.name == undefined || imgAvatar.name == '' || imgAvatar.name == null) {
       item.customerAvatar = '';
     } else {
@@ -141,7 +144,7 @@ router.post('/form/(:id)?', checkAuthentication, async function (req, res, next)
       customerAddress: item.customerAddress,
       customerGroupId: item.customerGroupId,
       modified: {
-        nameUpdateAt: 'admin',
+        nameUpdateAt: userObj.name,
         time: Date.now()
       }
     }, (err, data) => {
@@ -169,6 +172,10 @@ router.get('(/trash)?/details/:id', checkAuthentication, async function (req, re
 router.get('/delete/:id', checkAuthentication, async function (req, res, next) {
   const _id = req.params.id;
   await itemsModel.updateOne({ _id: _id }, {
+    softErase: {
+      nameSoftEraseAt: userObj.name,
+      time: Date.now()
+    },
     softDelete: "1",
   }, (err, data) => {
     res.redirect('back');
@@ -220,7 +227,6 @@ router.get('/trash/delete/:id', checkAuthentication, async function (req, res, n
 router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
   req.session.sort_field = req.params.sort_field;
   req.session.sort_type = req.params.sort_type;
-  // console.log(req.session.sort_field,req.session.sort_type)
   res.redirect('back');
 });
 module.exports = router;
